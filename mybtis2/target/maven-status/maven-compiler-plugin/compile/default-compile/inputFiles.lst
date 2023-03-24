@@ -1,0 +1,11 @@
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Entity/Employee.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Mapper/EmpMapper.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Service.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Batis2Application.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Exception/ExternalApiException.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Entity/MyBatisUtil.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Exception/ErrorMessage.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Mapper/EmployeeMyBatisRepository.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Config.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/Exception/GlobalExceptionHandler.java
+/Users/mz01-luyendd/Desktop/mybtis/src/main/java/com/example/batis2/EmpController.java
