@@ -1,12 +1,12 @@
 package com.example.annotation.entity;
 
+import com.example.annotation.annotation.ImportantString;
+import com.example.annotation.annotation.Runimmediately;
 import com.example.annotation.annotation.VeryImportant;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 @VeryImportant
 public class Cat {
+     @ImportantString
      String name;
      int age;
 
@@ -18,8 +18,16 @@ public class Cat {
         System.out.println("Meow!!");
     }
 
-    @VeryImportant
+    @Runimmediately(times = 3)
     public void eat() {
         System.out.println("Munch");
+    }
+
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

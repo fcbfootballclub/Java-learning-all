@@ -1,6 +1,7 @@
 package com.mzvn.reflection;
 
 import com.mzvn.reflection.entity.Bird;
+import com.mzvn.reflection.entity.Dog;
 import com.mzvn.reflection.entity.Goat;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -190,5 +191,109 @@ class ReflectionApplicationTests {
 
         assertEquals(1, fields.length);
         assertEquals("CATEGORY", fields[0].getName());
+    }
+
+    @Test
+    public void givenClass_whenGetsPublicFieldByName_thenCorrect() throws ClassNotFoundException, NoSuchFieldException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        Field field = birdClass.getField("CATEGORY");
+//        Field field1 = birdClass.getField("no");
+        assertEquals("CATEGORY", field.getName());
+//        assertEquals(null, field1);
+    }
+
+    @Test
+    public void givenClass_whenGetsDeclaredFields_thenCorrect() throws ClassNotFoundException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        Field[] fields = birdClass.getDeclaredFields();
+
+        assertEquals(1, fields.length);
+        assertEquals("walks", fields[0].getName());
+    }
+
+    @Test
+    public void givenClass_whenGetsFieldsByName_thenCorrect() throws ClassNotFoundException, NoSuchFieldException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        Field field = birdClass.getDeclaredField("walks");
+
+        assertEquals("walks", field.getName());
+    }
+
+
+    //get fields type
+    @Test
+    public void givenClassField_whenGetsType_thenCorrect() throws ClassNotFoundException, NoSuchFieldException {
+        Field field = Class.forName("com.mzvn.reflection.entity.Bird")
+                .getDeclaredField("walks");
+        Class<?> fieldClass = field.getType();
+
+        assertEquals("boolean", fieldClass.getSimpleName());
+    }
+
+    //
+    @Test
+    public void givenClassField_whenSetsAndGetsValue_thenCorrect() throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        Bird bird = (Bird) birdClass.getConstructor().newInstance();
+        Field field = birdClass.getDeclaredField("walks");
+        field.setAccessible(true);
+
+        assertFalse(field.getBoolean(bird));
+        assertFalse(bird.walks());
+
+        field.set(bird, true);
+
+        assertTrue(field.getBoolean(bird));
+        assertTrue(bird.walks());
+    }
+
+    @Test
+    public void givenClassField_whenGetsAndSetsWithNull_thenCorrect() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        Field field = birdClass.getField("CATEGORY");
+        field.setAccessible(true);
+
+        assertEquals("domestic", field.get(null));
+    }
+
+    @Test
+    public void givenClassField_whenSetnewValue_thenCorrect() throws ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+        Class<?> dogClass = Class.forName("com.mzvn.reflection.entity.Dog");
+        Field[] fields = dogClass.getFields();
+        Field[] fields2 = dogClass.getDeclaredFields();
+        Dog dog = (Dog) dogClass.getConstructor().newInstance();
+        Field field = dogClass.getDeclaredField("legs");
+        field.setAccessible(true);
+        field.setInt(dog, 9);
+        System.out.println(fields);
+        System.out.println(fields2);
+        System.out.println();
+        System.out.println(dog);
+    }
+
+    //inspect method
+    @Test
+    public void givenClass_whenGetsAllPublicMethods_thenCorrect() throws ClassNotFoundException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        Method[] methods = birdClass.getMethods();
+        List<String> methodNames = getMethodNames(methods);
+
+        assertTrue(methodNames.containsAll(Arrays
+                .asList("equals", "notifyAll", "hashCode",
+                        "walks", "eats", "toString")));
+    }
+
+    @Test
+    public void givenClass_whenGetsOnlyDeclaredMethods_thenCorrect() throws ClassNotFoundException {
+        Class<?> birdClass = Class.forName("com.mzvn.reflection.entity.Bird");
+        List<String> actualMethodNames
+                = getMethodNames(birdClass.getDeclaredMethods());
+
+        List<String> expectedMethodNames = Arrays
+                .asList("setWalks", "walks", "getSound", "eats");
+
+        assertEquals(expectedMethodNames.size(), actualMethodNames.size());
+        assertTrue(expectedMethodNames.containsAll(actualMethodNames));
+        assertTrue(actualMethodNames.containsAll(expectedMethodNames));
     }
 }
