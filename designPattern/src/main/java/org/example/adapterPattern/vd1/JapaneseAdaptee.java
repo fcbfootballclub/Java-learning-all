@@ -1,4 +1,4 @@
-package org.example.adapterPattern;
+package org.example.adapterPattern.vd1;
 
 public class JapaneseAdaptee {
 
