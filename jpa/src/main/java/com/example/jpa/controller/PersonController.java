@@ -3,6 +3,7 @@ package com.example.jpa.controller;
 import com.example.jpa.entity.Car;
 import com.example.jpa.entity.Person;
 import com.example.jpa.repo.CarRepo;
+import com.example.jpa.repo.CarRepo2;
 import com.example.jpa.repo.PersonRepo;
 import com.example.jpa.service.JpaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class PersonController {
     @Autowired private CarRepo carRepo;
 
     @Autowired private PersonRepo personRepo;
+
+    @Autowired private CarRepo2 carRepo2;
 
     @GetMapping(path = "")
     public ResponseEntity getAllPerson() {
@@ -57,5 +60,10 @@ public class PersonController {
     @GetMapping(path = "/car")
     public ResponseEntity getCar() {
         return ResponseEntity.ok(carRepo.findAll());
+    }
+
+    @GetMapping(path = "/v2/car/{id}")
+    public ResponseEntity getCar2(@PathVariable Long id) {
+        return ResponseEntity.ok(carRepo2.listCar(1));
     }
 }
