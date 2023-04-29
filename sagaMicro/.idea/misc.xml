@@ -8,6 +8,15 @@
         <option value="$PROJECT_DIR$/Kafka/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/Kafka/pom.xml" />
+        <option value="$PROJECT_DIR$/admin-server/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka-api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/eureuka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/zipkin-server/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="corretto-11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

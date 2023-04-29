@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,7 @@ public class PersonController {
     }
 
     @PostMapping (path = "")
-    public ResponseEntity addPerson(@RequestBody Person person) {
+    public ResponseEntity addPerson(@Valid  @RequestBody Person person) {
         return ResponseEntity.ok(person);
     }
 

@@ -10,7 +10,7 @@ import org.example.event.PaymentStatus;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_tbl")
 @Data
 @Builder
 @AllArgsConstructor

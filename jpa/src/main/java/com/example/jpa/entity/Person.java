@@ -1,5 +1,6 @@
 package com.example.jpa.entity;
 
+import com.example.jpa.annotation.IpAddress;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.*;
 
 @Entity
@@ -20,9 +25,14 @@ public class Person {
     private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "this must not be empty")
     private String name;
 
     @Column(name = "age")
+/*    @Min(value = 5, message = "this length must at least 5")
+    @Max(25)*/
+//    @Pattern(regexp = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$", message = "Wrong IP address")
+    @IpAddress
     private String age;
 
     @Column(name = "create_at")
