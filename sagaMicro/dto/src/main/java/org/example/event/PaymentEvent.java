@@ -1,13 +1,20 @@
 package org.example.event;
 
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.dto.PaymentRequestDto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @NoArgsConstructor
-public class PaymentEvent implements  Event{
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@ToString
+public class PaymentEvent implements  Event, Serializable  {
+    private static final long serialVersionUID = 85824334376017889L;
     private UUID eventId = UUID.randomUUID();
     private Date date = new Date();
 

@@ -9,18 +9,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="common-dto" />
         <module name="payments" />
-        <module name="eureuka-server" />
-        <module name="Kafka" />
-        <module name="admin-server" />
-        <module name="zipkin-server" />
-        <module name="demo" />
-        <module name="eureka-api-gateway" />
         <module name="products" />
         <module name="order" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="admin-server" target="11" />
+      <module name="demo" target="11" />
       <module name="demoApi" target="11" />
+      <module name="eureka-api-gateway" target="11" />
+      <module name="eureuka-server" target="11" />
+      <module name="Kafka" target="11" />
+      <module name="zipkin-server" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
