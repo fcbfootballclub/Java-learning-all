@@ -1,29 +1,32 @@
 package org.example.service;
 
-import lombok.extern.log4j.Log4j2;
+import org.example.dto.OrderResponseDto;
 import org.example.entity.Product;
+import org.example.event.PaymentEvent;
 import org.example.payloads.ProductRequest;
 import org.example.exception.ProductServiceException;
 import org.example.payloads.ProductResponse;
 import org.example.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Log4j2
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final Logger log;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper, Logger log) {
         this.productRepository = productRepository;
         this.modelMapper = modelMapper;
+        this.log = log;
     }
 
     @Override
@@ -79,17 +82,17 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public void reduceQuantity(long productId, long quantity) {
+    public boolean reduceQuantity(long productId, long quantity) {
         log.info("calling reduce quantity product inventory");
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductServiceException("Product not found", 404));
         if(product.getQuantity() >= quantity) {
             product.setQuantity(product.getQuantity() - quantity);
-        } else {
-            throw new ProductServiceException(product.getTitle() + "Does not have enough quantity left", 400);
         }
+        else
+            return false;
         productRepository.save(product);
-        log.info("Product Quantity updated Successfully");
+        return true;
     }
 
 }

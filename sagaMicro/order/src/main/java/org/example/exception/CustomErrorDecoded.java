@@ -7,7 +7,6 @@ import org.apache.commons.io.IOUtils;
 import org.example.exception.errorMessage.ErrorMessage;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class CustomErrorDecoded implements ErrorDecoder {
     private final ErrorDecoder errorDecoder = new Default();

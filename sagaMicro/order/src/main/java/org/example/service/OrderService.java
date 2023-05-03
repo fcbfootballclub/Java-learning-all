@@ -1,41 +1,61 @@
 package org.example.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.demo.CONSTANT;
 import org.example.dto.OrderRequestDto;
+import org.example.dto.OrderResponseDto;
 import org.example.dto.User;
+import org.example.entity.OrderEventOutBox;
 import org.example.entity.PurchaseOrder;
-import org.example.event.OrderStatus;
-import org.example.event.PaymentEvent;
-import org.example.event.PaymentStatus;
+import org.example.demo.OrderStatus;
+import org.example.demo.PaymentStatus;
+import org.example.repository.OrderEventOutBoxRepository;
 import org.example.repository.OrderRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
     @Autowired private OrderRepository orderRepository;
-    @Autowired private OrderStatusPublisher orderStatusPublisher;
+    @Autowired private OrderEventOutBoxRepository orderEventOutBoxRepository;
     @Autowired private PaymentFeignClient paymentFeignClient;
-    private final Logger logger = LoggerFactory.getLogger(OrderService.class);
+    @Autowired private ModelMapper modelMapper;
+    @Autowired
+    private Logger logger;
 
     @Transactional
-    public PurchaseOrder createOrder(OrderRequestDto orderRequestDto) {
+    public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
         User userById = paymentFeignClient.getUserById(orderRequestDto.getUserId());
         if(userById == null) {
             throw new RuntimeException("User not exists");
         }
         PurchaseOrder order = orderRepository.save(this.convertDtoToEntity(orderRequestDto));
-        orderRequestDto.setOrderId(order.getId());
+        OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
 
-        //create kafka event
-        orderStatusPublisher.publishOrderEvent(orderRequestDto, OrderStatus.ORDER_CREATED);
-        return order;
+        //save event to out box table
+        ObjectMapper objectMapper = new ObjectMapper();
+        OrderEventOutBox event = null;
+        try {
+            event = OrderEventOutBox.builder()
+                    .id(orderResponseDto.getOrderId())
+                    .topicName(CONSTANT.TOPIC.PAYMENT_REQUEST.toString())
+                    .eventJson(objectMapper.writeValueAsString(orderResponseDto))
+                    .publicStatus(false)
+                    .build();
+
+        } catch (JsonProcessingException e) {
+            logger.error("Error saving order");
+            throw new RuntimeException(e);
+        }
+        orderEventOutBoxRepository.save(event);
+        return orderResponseDto;
     }
 
     public List<PurchaseOrder> getAllOrders() {
@@ -46,13 +66,14 @@ public class OrderService {
         return PurchaseOrder.builder()
                 .userId(orderRequestDto.getUserId())
                 .productId(orderRequestDto.getProductId())
+                .quantity(orderRequestDto.getQuantity())
                 .orderStatus(OrderStatus.ORDER_CREATED)
-                .price(orderRequestDto.getAmount())
+                .amount(orderRequestDto.getAmount())
                 .paymentStatus(PaymentStatus.PENDING)
                 .build();
     }
 
-    @KafkaListener(
+/*    @KafkaListener(
             topics = "${spring.kafka.topic.name-payment-response}",
             groupId ="${spring.kafka.consumer.group-id}"
     )
@@ -70,5 +91,5 @@ public class OrderService {
                     return order;
                 })
                 .orElseThrow();
-    }
+    }*/
 }

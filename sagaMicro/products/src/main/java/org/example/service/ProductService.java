@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.dto.OrderResponseDto;
 import org.example.entity.Product;
 import org.example.payloads.ProductRequest;
 import org.example.payloads.ProductResponse;
@@ -17,5 +18,6 @@ public interface ProductService {
 
     ProductResponse deleteProduct(long productId);
 
-    void reduceQuantity(long productId, long quantity);
+    boolean reduceQuantity(long productId, long quantity);
+
 }

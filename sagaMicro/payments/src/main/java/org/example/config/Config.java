@@ -9,12 +9,13 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class Config {
 
-    @Value("${spring.kafka.topic.name-payment-status}")
+    @Value("${spring.kafka.topic.name-inventory-request}")
     private String topic;
 
     @Bean
     public NewTopic paymentStatus() {
-        return TopicBuilder.name(topic)
+        return TopicBuilder
+                .name(topic)
                 .build();
     }
 }

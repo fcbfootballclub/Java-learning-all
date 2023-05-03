@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class OrderControllerAdvice {
 
     @ExceptionHandler(FeignClientException.class)
-    public ResponseEntity<?> restApiException(FeignClientException ex) {
+    public ResponseEntity<?> handleRestApiException(FeignClientException ex) {
         return ResponseEntity.ok(
                 ErrorMessage.builder()
                         .code(HttpStatus.NOT_FOUND.value())
