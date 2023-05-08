@@ -1,7 +1,5 @@
 package org.example.service;
 
-import org.example.dto.OrderResponseDto;
-import org.example.entity.Product;
 import org.example.payloads.ProductRequest;
 import org.example.payloads.ProductResponse;
 

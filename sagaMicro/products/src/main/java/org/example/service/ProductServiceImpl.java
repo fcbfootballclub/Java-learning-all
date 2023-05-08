@@ -1,8 +1,6 @@
 package org.example.service;
 
-import org.example.dto.OrderResponseDto;
 import org.example.entity.Product;
-import org.example.event.PaymentEvent;
 import org.example.payloads.ProductRequest;
 import org.example.exception.ProductServiceException;
 import org.example.payloads.ProductResponse;
@@ -10,7 +8,6 @@ import org.example.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
